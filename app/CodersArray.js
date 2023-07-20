@@ -1,17 +1,23 @@
 class CodersArray {
   array;
+  length;
 
   constructor(...array) {
     this.array = array;
 
     let incrementalLength = 0;
-    for (value of array) {
+    for (const value of array) {
       incrementalLength++;
     }
 
     this.length = incrementalLength;
   }
-}
 
-const array = new CodersArray("1", 1, true);
-console.log(array.length);
+  map(mappingFunction) {
+    for (let index = 0; index < this.length; index++) {
+      this.array[index] = mappingFunction(this.array[index]);
+    }
+
+    return this.array;
+  }
+}

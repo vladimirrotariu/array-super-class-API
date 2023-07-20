@@ -38,4 +38,10 @@ class CodersArray {
       }
     }
   }
+
+  push(newLastElement) {
+    const getPushedArray = (...newArray) => newArray;
+    this.array = getPushedArray(...this.array, newLastElement);
+    return this.length;
+  }
 }

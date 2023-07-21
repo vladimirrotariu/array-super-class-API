@@ -5,8 +5,12 @@ class CodersArray {
   constructor(...array) {
     this.array = array;
 
+    this.updateLength();
+  }
+
+  updateLength() {
     let incrementalLength = 0;
-    for (const value of array) {
+    for (const value of this.array) {
       incrementalLength++;
     }
 
@@ -42,6 +46,7 @@ class CodersArray {
   push(newLastElement) {
     const getPushedArray = (...newArray) => newArray;
     this.array = getPushedArray(...this.array, newLastElement);
+    this.updateLength();
     return this.length;
   }
 }

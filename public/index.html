@@ -5,161 +5,176 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="favicon.png">
-  <link href="css/prism/prism.css" rel="stylesheet" />
-  <script src="src/dependencies/prism/prism.js" defer />
-  </script>
-  <link rel="stylesheet" href="css/globals/reset.css">
+  <link href="css/prism/prism.css" rel="stylesheet">
+  <script src="src/dependencies/prism/prism.js" defer></script>
+  <link rel="stylesheet" href="css/styles.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-  <title>StrictEqual API</title>
+  <title>ArraySuperClass API</title>
 </head>
 
-<body class="bg-light p-2">
-  <div class="container p-0 m-0">
-    <h1>ArraySuperClass API</h1>
-    <section>
-      <h2>Description</h2>
-      <p>An API that consists of an implementation of JavaScript's strict equal operator using algebraic properties
-        and native types, and thus extending Object.is().
-      </p>
+<body class="bg-light">
+  <div class="container">
+    <main>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand fs-2 fs-md-1 fs-lg-1" href="#">ArraySuperClass API</a>
+        <div class="container">
+          <div class="navbar-nav">
+            <a class="nav-link btn btn-light mx-2" href="#description">Description</a>
+            <a class="nav-link btn btn-light mx-2" href="#testing">Testing with Cucumber.js</a>
+            <a class="nav-link btn btn-light mx-2" href="#implementation">ArraySuperClass Implementation</a>
+          </div>
+        </div>
+      </nav>
+      <section id="description" class="mb-5">
+        <h2 class="h3">Description</h2>
+        <p class="lead">ArraySuperClass is a custom implementation of JavaScript's native Array:
+          we reimplemented lightweight versions of some popular array methods: map, some, find, push. However, we chose
+          our implementation of map to MUTATE the instance of ArraySuperClass it is being invoked to.</p>
+      </section>
 
-      <h2>Testing with Jest</h2>
-      <p> We performed the tests below, aimed primarily at JavaScript's exceptions (e.g. <code>NaN === NaN</code> is
-        <code>false</code>). The istanbul coverage report might be found <a href="coverage-report/isStrictEqual.js.html"
-          class="link-info">here</a>.
-      </p>
+      <section id="testing" class="mb-5">
+        <h2 class="h3">Testing with Cucumber.js</h2>
+        <p class="lead">Below one might find the step definitions we use. We stress again that our customized map
+          MUTATES the array it is invoked to!
+        </p>
+        <div class="card shadow">
+          <div class="card-body">
+            <pre><code class="language-gherkin">
+#does_it_contain_array_API.feature 
 
-      <h3>API code</h3>
+Feature: Does the ArraySuperClass class contain the properties of an object instantiated from the native JavaScript Array class?
+  We implemented ArraySuperClass to have the native JavaScript API, as well as the array value, under the property called array.
 
-      <pre style="height: 85vh; width: 100vw">
-        <code class="language-javascript">
-          const isStrictEqual = (valueA, valueB) => {
-            Number.isNaN(valueA) || Number.isNaN(valueB)
-            ? (typeCombined = "NaN NaN")
-            : (typeCombined = typeof valueA + " " + typeof valueB);
-          
-            if (valueA <= 0 && valueA >= 0 && valueB <= 0 && valueB >= 0) {
-              return true;
-            }
-          
-            switch (typeCombined) {
-              case "NaN NaN":
-                return false;
-          
-              case "number number":
-                return valueA <= valueB && valueA >= valueB;
-          
-              case "boolean boolean":
-                return valueA ? valueB : !valueB;
-          
-              case "string string":
-                if (valueA.length >= valueB.length && valueA.length <= valueB.length) { 
-                  const lengthText = valueA.length; 
-                  let charactersA = valueA.split(""); 
-                  let charactersB = valueB.split(""); 
-                  let isLocallyEqual = []; 
+  Scenario: ArraySuperClass class instances contains the properties of instances of the native JavaScript Array class
+    Given an instance of the ArraySuperClass class 
+    When compared with an instance of the native JavaScript Array class, not necessarily with the same array value
+    Then it should contain all the properties of the instance of the native JavaScript Array class i.e. the array API
 
-                  for (let i = 0 ; i < lengthText - 1; i++) { 
-                    isLocallyEqual.push( charactersA.slice(i, i + 1).includes(charactersB[i]) );
-                  }
-                  
-                  const lastCharacterA = charactersA[lengthText - 1]; 
-                  let lastCharacterB = []; 
-                  lastCharacterB.push(charactersB[lengthText - 1]); 
-                  isLocallyEqual.push(lastCharacterB.includes(lastCharacterA)); 
-                  return !isLocallyEqual.includes(false); 
-                }
+  Scenario: ArraySuperClass class instances' length property is the same as the length property of instances of the native JavaScript Array class
+    Given the length property of an instance of the ArraySuperClass class 
+    When compared with an instance of the native JavaScript Array class, with the same number of elements
+    Then both length properties should point to the same number value
 
-                return false; 
-              } 
-              return false; 
-            };
+#does_it_extend_array_API.feature
 
-          export default isStrictEqual;
-        </code>
-      </pre>
+Feature: Does the ArraySuperClass class contain properties that are functionally similar to the ones of JavaScript's native Array class?
+  We reimplemented lightweight versions of some popular array methods: map, some, find, push.
+  We added some modifications from the originals, though: map, for example, does not create a new array, but instead
+  mutates the original array.
 
-      <h3>Jest tests code</h3>
+  Scenario: ArraySuperClass class instances' map method MUTATES the original array with the provided callback
+    Given the map method of an instance of the ArraySuperClass class
+    When we invoke map with a provided callback
+    Then it should mutate the original instance element-wise with the callback
 
-      <pre style="height: 85vh; width: 100vw">
-        <code class="language-javascript">
-          import isStrictEqual from "./isStrictEqual.js";
-            
-          describe("Given a function named strictEquals", () => {
-            let valueA, valueB;
-            describe("When given the numbers 1 and 1", () => {
-              test("Then it should return true, meaning that they are strictly equal", () => {
-                valueA = 1, valueB = 1;
-          
-                const result = isStrictEqual(valueA, valueB);
-          
-                expect(result).toBeTruthy();
-              })
-            })
-            
-            describe("When given the numbers NaN and NaN", () => {
-              test("Then it should return false, meaning that they are not strictly equal", () => {
-                valueA = NaN, valueB = NaN;
-            
-                const result = isStrictEqual(valueA, valueB);
-            
-                expect(result).toBeFalsy();
-              })
-            })
-            
-            describe("When given the numbers 0 and -0", () => {
-              test("Then it should return true, meaning that they are strictly equal", () => {
-                valueA = 0, valueB = -0;
-            
-                const result = isStrictEqual(valueA, valueB);
-            
-                expect(result).toBeTruthy();
-              })
-            })
-            
-            describe("When given the number 1 and the string '1'", () => {
-              test("Then it should return false, meaning that they are not strictly equal", () => {
-                valueA = 1, valueB = "1";
-            
-                const result = isStrictEqual(valueA, valueB);
-            
-                expect(result).toBeFalsy();
-              })
-            })
-            
-            describe("When given the boolean true and the boolean false", () => {
-              test("Then it should return false, meaning that they are not strictly equal", () => {
-                valueA = true, valueB = false;
-            
-                const result = isStrictEqual(valueA, valueB);
-            
-                expect(result).toBeFalsy();
-              })
-            })
-            
-            describe("When given the string 'water' and the string 'Water'", () => {
-              test("Then it should return false, meaning that they are not strictly equal", () => {
-                valueA = "water", valueB = "Water";
-            
-                const result = isStrictEqual(valueA, valueB);
-            
-                expect(result).toBeFalsy();
-              })
-            })
-            
-            describe("When given the string 'water' and the string 'waterish'", () => {
-              test("Then it should return false, meaning that they are not strictly equal", () => {
-                valueA = "water", valueB = "waterish";
-            
-                const result = isStrictEqual(valueA, valueB);
-            
-                expect(result).toBeFalsy();
-              })
-            })
-          })
-        </code>
-      </pre>
-    </section>
+  Scenario: ArraySuperClass class instances' some method returns true when a condition is met
+    Given the some method of an instance of the ArraySuperClass class
+    When we invoke some with a provided callback
+    Then it should return true if any element meets the condition
+
+  Scenario: ArraySuperClass class instances' find method returns the first element that satisfies the provided condition
+    Given the find method of an instance of the ArraySuperClass class
+    When we invoke find with a provided callback
+    Then it should return the first element that satisfies the condition
+
+  Scenario: ArraySuperClass class instances' push method adds a new element to the end of the array
+    Given the push method of an instance of the ArraySuperClass class
+    When we invoke push with a provided new element
+    Then it should add the new element to the end of the array
+    And it should update the length of the array
+  </code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="implementation" class="mb-5">
+        <h3 class="h4">ArraySuperClass Implementation</h3>
+        <div class="card shadow">
+          <div class="card-body">
+            <pre><code class="language-javascript">
+/**
+ * ArraySuperClass is a custom implementation of JavaScript's native Array.
+ */
+class ArraySuperClass {
+  array;
+  length;
+
+  /**
+   * Constructs an ArraySuperClass instance with the given elements.
+   * @param {...any} array - The elements to initialize the array with.
+   */
+  constructor(...array) {
+    this.array = array;
+    this.#updateLength();
+  }
+
+  /**
+   * Updates the 'length' property of the ArraySuperClass instance.
+   * @private
+   */
+  #updateLength() {
+    this.length = 0;
+    for (const _ of this.array) {
+      this.length++;
+    }
+  }
+
+  /**
+   * Maps each element using a mapping function. As opposed to the native API, this is !!! MUTABLE !!!.
+   * @param {Function} mappingFunction - The function to apply to each element.
+   */
+  map(mappingFunction) {
+    for (let index = 0; index < this.length; index++) {
+      this.array[index] = mappingFunction(this.array[index]);
+    }
+  }
+
+  /**
+   * Tests whether at least one element passes the test implemented by the provided function.
+   * @param {Function} testFunction - The function to test for each element.
+   * @returns {boolean} True if at least one element passes the test, otherwise false.
+   */
+  some(testFunction) {
+    for (let index = 0; index < this.length; index++) {
+      if (testFunction(this.array[index])) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Returns the value of the first element that satisfies the provided test function.
+   * @param {Function} testFunction - The function to test for each element.
+   * @returns {any} The first element that satisfies the test function; otherwise undefined.
+   */
+  find(testFunction) {
+    for (let index = 0; index < this.length; index++) {
+      if (testFunction(this.array[index])) {
+        return this.array[index];
+      }
+    }
+    return undefined;
+  }
+
+  /**
+   * Adds one element to the end of the array and updates the length property.
+   * @param {any} newLastElement - The element to add to the end of the array.
+   * @returns {number} The new length property of the array.
+   */
+  push(newLastElement) {
+    this.array[this.length] = newLastElement;
+    this.#updateLength();
+    return this.length;
+  }
+
+}
+export default ArraySuperClass;</code></pre>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
 </body>
 

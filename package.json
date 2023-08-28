@@ -1,8 +1,8 @@
 {
-  "name": "ArrayClassAPI",
+  "name": "ArraySuperClass",
   "version": "1.0.0",
-  "description": "An API that consists of an implementation of JavaScript's strict equal operator using algebraic properties and native types, and obstinately avoiding array methods; it extends Object.is().",
-  "main": "arrayMethodsReimplemented.js",
+  "description": "ArraySuperClass is a custom implementation of JavaScript's native Array.",
+  "main": "ArraySuperClass.js",
   "type": "module",
   "scripts": {
     "test": "cucumber-js"

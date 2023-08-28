@@ -1,7 +1,12 @@
 {
     "cucumberautocomplete.steps": [
-        "public/features/*.feature",
-        "public/features/step_definitions/stepdefs.js"
+        "features/does_it_extend_Array_API.feature",
+        "features/step_definitions/stepdefs.mjs"
     ],
-    "cucumberautocomplete.strictGherkinCompletion": true
+    "cucumberautocomplete.strictGherkinCompletion": true,
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": true
+    }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "StrictEqual API",
+  "name": "ArrayClassAPI",
   "version": "1.0.0",
   "description": "An API that consists of an implementation of JavaScript's strict equal operator using algebraic properties and native types, and obstinately avoiding array methods; it extends Object.is().",
   "main": "arrayMethodsReimplemented.js",

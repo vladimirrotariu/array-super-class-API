@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /* PrismJS 1.29.0
 https://prismjs.com/download.html#themes=prism-funky&languages=markup+css+clike+javascript+gherkin */
 /// <reference lib="WebWorker"/>

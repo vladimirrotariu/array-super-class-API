@@ -26,7 +26,8 @@ See more details in the [COMPANION WEBSITE](https://array-super-class-api.vercel
 
 ## Tech stack
 * Web: JavaScript ES2023, HTML5, Bootstrap, Prism.js.
-* BDD with Cucumber.js
+* Testing/BDD: Cucumber.js
+* CI/CD: GitHub Actions
 
 ## Testing
 We specifically adopted Cucumber.js due to the high abstract level of the functionalities tested: thus, we were allowed to clearly separate the test logic from the code.
